@@ -1,3 +1,5 @@
 <div>
-    Content from /templates/embedded/info.mobile.tpl
+    {$this->user('mobile-test')->getName()}
+    <br>
+    {$this->user->getName()}
 </div>

@@ -1,3 +1,5 @@
 <div>
-    Content from /templates/embedded/info.tpl
+    {$this->user('test')->getName()}
+    <br>
+    {$this->user->getName()}
 </div>
