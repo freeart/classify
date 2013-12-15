@@ -2,7 +2,7 @@
 
 function isMobile()
 {
-    if (preg_match('/(android|iphone|ipod)/i', $_SERVER['HTTP_USER_AGENT']))
+    if (preg_match('/(android|iphone|ipod|phone)/i', $_SERVER['HTTP_USER_AGENT']))
         return true;
     else
         return false;
