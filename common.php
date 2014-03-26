@@ -2,16 +2,18 @@
 
 function isMobile()
 {
-    if (preg_match('/(android|iphone|ipod|phone)/i', $_SERVER['HTTP_USER_AGENT']))
-        return true;
-    else
-        return false;
-}
+	if (defined('DESKTOP')){
+		return false;
+	}
 
-function validateDate($date, $format = 'Y-m-d H:i:s')
-{
-    $d = DateTime::createFromFormat($format, $date);
-    return $d && $d->format($format) == $date;
+	if (defined('MOBILE')){
+		return true;
+	}
+
+	if (preg_match('/(android|iphone|ipod|phone)/i', $_SERVER['HTTP_USER_AGENT']))
+		return true;
+	else
+		return false;
 }
 
 function catch_handler($error_level, $error_message,

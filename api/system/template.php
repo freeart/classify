@@ -2,33 +2,43 @@
 
 class Template extends Api
 {
-    private $link;
+	private $link;
 
-    public function __construct()
-    {
-	    parent::__construct();
+	public function __construct()
+	{
+		parent::__construct();
 
-        require('../smarty/bin/Smarty.class.php');
-        $this->link = new Smarty();
+		if (!is_writable('../smarty/templates_c') || !is_writable('../smarty/cache') || !is_writable('../smarty/configs')) {
+			echo "Check write permissions for smarty folders";
+			exit;
+		}
 
-        $this->link->setTemplateDir('../templates');
-        $this->link->setCompileDir('../smarty/templates_c');
-        $this->link->setCacheDir('../smarty/cache');
-        $this->link->setConfigDir('../smarty/configs');
+		try {
+			require('../smarty/bin/Smarty.class.php');
+			$this->link = new Smarty();
 
-	    $i18n = $this->i18n;
+			$this->link->setTemplateDir('../templates');
 
-	    $this->link->registerPlugin("block", "t", array($i18n, 't'));
-    }
+			$this->link->setCompileDir('../smarty/templates_c');
+			$this->link->setCacheDir('../smarty/cache');
+			$this->link->setConfigDir('../smarty/configs');
 
-    public static function __callStatic($method, $args)
-    {
-        return call_user_func_array('Smarty::' . $method, $args);
-    }
+			$i18n = $this->i18n;
 
-    public function __call($method, $args)
-    {
-        return call_user_func_array(array($this->link, $method), $args);
-    }
+			$this->link->registerPlugin("block", "t", array($i18n, 't'));
+		} catch (Exception $e) {
+			echo 'Caught exception: ', $e->getMessage(), "\n";
+		}
+	}
+
+	public static function __callStatic($method, $args)
+	{
+		return call_user_func_array('Smarty::' . $method, $args);
+	}
+
+	public function __call($method, $args)
+	{
+		return call_user_func_array(array($this->link, $method), $args);
+	}
 
 }
